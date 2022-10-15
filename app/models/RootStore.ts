@@ -1,9 +1,11 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { AnimeStoreModel } from "./AnimeStore"
 
 /**
  * A RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
+    animeStore: types.optional(AnimeStoreModel, {} as any),
 })
 
 /**

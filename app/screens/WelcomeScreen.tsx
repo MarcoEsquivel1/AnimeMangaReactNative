@@ -1,45 +1,53 @@
 import { observer } from "mobx-react-lite"
 import React, {
-  FC,
+  FC, useEffect,
 } from "react"
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { Dimensions, FlatList, Image, ImageStyle, ScrollView, TextStyle, View, ViewStyle } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import {
-  Text,
+  Text, Screen
 } from "../components"
+import { AnimeComponent } from "../components/Anime"
 import { isRTL } from "../i18n"
+import { useStores } from "../models"
 import { colors, spacing } from "../theme"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
 
 
-export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen(
+export const WelcomeScreen = observer(function WelcomeScreen(
 ) {
-
+  const {height} = Dimensions.get('window');
+  const { animeStore } = useStores()
+  useEffect(() => {
+    animeStore.fetchAnimes()
+  }, [])
+  
   return (
-    <View style={$container}>
-      <View style={$topContainer}>
-        <Image style={$welcomeLogo} source={welcomeLogo} resizeMode="contain" />
-        <Text
-          testID="welcome-heading"
-          style={$welcomeHeading}
-          tx="welcomeScreen.readyForLaunch"
-          preset="heading"
-        />
-      <View className="bg-white h-20 w-10 border"></View>
-        <Text tx="welcomeScreen.exciting" preset="subheading" />
-        <Image style={$welcomeFace} source={welcomeFace} resizeMode="contain" />
-      </View>
-
-      <SafeAreaView style={$bottomContainer} edges={["bottom"]}>
-        <View style={$bottomContentContainer}>
-          <Text tx="welcomeScreen.postscript" size="md" />
+    <Screen style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
+      <ScrollView style={{flex: 1,}}>
+        <View style={{ }}>
+          <FlatList 
+            data={animeStore.animeList}
+            horizontal={true}
+            contentContainerStyle={{ paddingHorizontal: 5 }}
+            renderItem={({item}) => <AnimeComponent anime={item} />}
+          />
+        
         </View>
-      </SafeAreaView>
-    </View>
+      </ScrollView>
+    </Screen>
   )
 })
+
+const $root: ViewStyle = {
+  flex: 1,
+}
+
+const $screenContentContainer: ViewStyle = {
+  flex: 1,
+}
 
 const $container: ViewStyle = {
   flex: 1,
