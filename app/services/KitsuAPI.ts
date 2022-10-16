@@ -15,6 +15,11 @@ export default class KitsuAPIService {
         return response.data.data;
     }
 
+    static async getMangaList() {
+        const response = await KitsuAPI.get('/manga');
+        return response.data.data;
+    }
+
     /* static async getAnimeCharacters(animeId: number) {
         const response = await KitsuAPI.get(`/media-characters/${animeId}/character`);
         return response.data.data;
