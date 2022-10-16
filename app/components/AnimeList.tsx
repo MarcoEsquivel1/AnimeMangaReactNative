@@ -70,6 +70,7 @@ export const AnimeList = observer(function AnimeList() {
                 />
               )
             }
+            keyExtractor={(item) => item.id}
             renderItem={({item}) => (<AnimeComponent isFavorite={animeStore.hasFavorite(item)} onPressFavorite={() => animeStore.toggleFavorite(item)} anime={item} />)}
           />
         </View>

@@ -70,6 +70,7 @@ export const MangaList = observer(function MangaList() {
                 />
               )
             }
+            keyExtractor={(item) => item.id}
             renderItem={({item}) => (<MangaComponent isFavorite={mangaStore.hasFavorite(item)} onPressFavorite={() => mangaStore.toggleFavorite(item)} manga={item} />)}
           />
         </View>
