@@ -1,6 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import KitsuAPIService from "../services/KitsuAPI"
-
+import { navigate } from "../navigators"
 /**
  * Model description here for TypeScript hints.
  */
@@ -30,12 +30,9 @@ export const AnimeModel = types
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({
-    /* toggleFavorite() {
-      self.favorite = !self.favorite
-    }, */
-    /* async fetchCharacters() {
-      const characters = await KitsuAPIService.getAnimeCharacters(self.id)
-    } */
+    navigate() {
+      navigate("Anime", { anime: self })
+    },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export interface Anime extends Instance<typeof AnimeModel> {}

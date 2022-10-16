@@ -36,43 +36,46 @@ export const AnimeComponent = observer(function Anime({anime, isFavorite, onPres
   }
 
   return (
-    <View
-      style={{
-        marginBottom: 10,
-        flexGrow: 0,
-        marginHorizontal: 10,
-        width: width / 1.5,
-        height: width / 1.1,
-        borderRadius: 10,
-        overflow: "hidden",
-      }}
+    <TouchableOpacity onPress={anime.navigate}
     >
-      <ImageBackground source={image} style={styles.image} imageStyle={{ borderRadius: 24 }}>
-        <View className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-1/6 ">
-          <View className="h-full">
-            <Text
-              style={{ width: width / 2 }}
-              className="text-white font-semibold text-lg"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {anime.canonicalTitle}
-            </Text>
+      <View
+        style={{
+          marginBottom: 10,
+          flexGrow: 0,
+          marginHorizontal: 10,
+          width: width / 1.5,
+          height: width / 1.1,
+          borderRadius: 10,
+          overflow: "hidden",
+        }}
+      >
+        <ImageBackground source={image} style={styles.image} imageStyle={{ borderRadius: 24 }}>
+          <View className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-1/6 ">
+            <View className="h-full">
+              <Text
+                style={{ width: width / 2 }}
+                className="text-white font-semibold text-lg"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {anime.canonicalTitle}
+              </Text>
+            </View>
           </View>
-        </View>
-        
-          <TouchableOpacity className="absolute top-0 right-0 bg-transparent/50 rounded-3xl p-5"
-            onPress={() => { handlePressFavorite() }}
-          >
-        <View >
-          <MaterialCommunityIcons
-            name="star"
-            size={35}
-            color={liked ? "yellow" : "white"}
-          />
-        </View>
-          </TouchableOpacity>
-      </ImageBackground>
-    </View>
+          
+            <TouchableOpacity className="absolute top-0 right-0 bg-transparent/50 rounded-3xl p-5"
+              onPress={() => { handlePressFavorite() }}
+            >
+          <View >
+            <MaterialCommunityIcons
+              name="star"
+              size={35}
+              color={liked ? "yellow" : "white"}
+            />
+          </View>
+            </TouchableOpacity>
+        </ImageBackground>
+      </View>
+    </TouchableOpacity>
   )
 })

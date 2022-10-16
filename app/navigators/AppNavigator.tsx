@@ -15,7 +15,9 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { useColorScheme } from "react-native"
 import Config from "../config"
+import { Anime } from "../models/Anime"
 import {
+  AnimeScreen,
   WelcomeScreen,
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
@@ -35,6 +37,9 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
  */
 export type AppStackParamList = {
   Welcome: undefined
+  Anime: {
+    anime: Anime
+  }
   // 🔥 Your screens go here
 }
 
@@ -58,6 +63,7 @@ const AppStack = observer(function AppStack() {
       screenOptions={{ headerShown: false }}
     >
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Anime" component={AnimeScreen} />
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
   )
