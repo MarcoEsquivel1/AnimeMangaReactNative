@@ -16,3 +16,13 @@ export const mapAnime = (anime: any) => (
     coverImage: anime.attributes.coverImage,
     youtubeVideoId: anime.attributes.youtubeVideoId,
 })
+export const mapManga = (manga: any) => (    
+    {
+    id: manga.id,
+    slug: manga.attributes.slug,
+    synopsis: manga.attributes.synopsis,
+    titles: manga.attributes.titles,
+    canonicalTitle: manga.attributes.canonicalTitle,
+    posterImage: manga.attributes.posterImage,
+    coverImage: manga.attributes.coverImage,
+})

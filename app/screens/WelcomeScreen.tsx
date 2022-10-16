@@ -4,8 +4,10 @@ import React, {
 } from "react"
 import { ScrollView, ViewStyle } from "react-native"
 import {
-  Screen,  AnimeList
+  Screen,
 } from "../components"
+import { AnimeList } from "../components/AnimeList"
+import { MangaList } from "../components/MangaList"
 
 
 
@@ -15,6 +17,7 @@ export const WelcomeScreen = observer(function WelcomeScreen(
     <Screen style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
       <ScrollView style={{flex: 1,}}>
         <AnimeList />
+        <MangaList />
       </ScrollView>
     </Screen>
   )

@@ -2,12 +2,12 @@ import * as React from "react"
 import { Dimensions, ImageBackground, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { Text } from "./Text"
-import { Anime } from "../models/Anime"
+import { Manga } from "../models/Manga"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
-export interface AnimeProps {
+export interface MangaProps {
   style?: StyleProp<ViewStyle>
-  anime: Anime,
+  manga: Manga,
   isFavorite?: boolean,
   onPressFavorite?: () => void
 }
@@ -19,9 +19,12 @@ const styles = StyleSheet.create({
   },
 })
 
-export const AnimeComponent = observer(function Anime({anime, isFavorite, onPressFavorite}: {anime: Anime, isFavorite?: boolean, onPressFavorite?: () => void}) {
+/**
+ * Describe your component here
+ */
+export const MangaComponent = observer(function Manga({manga, isFavorite, onPressFavorite}: {manga: Manga, isFavorite?: boolean, onPressFavorite?: () => void}) {
   const { width } = Dimensions.get("window")
-  const image = anime.posterImage != null ? { uri: anime.posterImage.small } : require("../../assets/images/error.jpg")
+  const image = manga.posterImage != null ? { uri: manga.posterImage.small } : require("../../assets/images/error.jpg")
   /* console.log(isFavorite); */
   const [liked, setliked] = React.useState(isFavorite);
   React.useEffect(() => {
@@ -56,7 +59,7 @@ export const AnimeComponent = observer(function Anime({anime, isFavorite, onPres
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {anime.canonicalTitle}
+              {manga.canonicalTitle}
             </Text>
           </View>
         </View>

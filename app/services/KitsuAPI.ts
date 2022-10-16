@@ -11,7 +11,7 @@ export const KitsuAPI = axios.create({
 export default class KitsuAPIService {
 
     static async getAnimeList() {
-        const response = await KitsuAPI.get('/anime');
+        const response = await KitsuAPI.get('/anime'); /* ?page%5Blimit%5D=10&page%5Boffset%5D=10 */
         return response.data.data;
     }
 

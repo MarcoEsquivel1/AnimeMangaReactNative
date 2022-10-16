@@ -10,14 +10,14 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
 export const AnimeStoreModel = types
   .model("AnimeStore")
   .props({
-    animeList: types.array(AnimeModel),
+    animes: types.array(AnimeModel),
     isLoading: types.optional(types.boolean, false),
     favorites: types.array(types.reference(AnimeModel)),
     favoritesOnly: false,
   })
   .views((self) => ({
-    get animes(){
-      return self.favoritesOnly ? self.favorites : self.animeList
+    get animeList(){
+      return self.favoritesOnly ? self.favorites : self.animes
     },
     hasFavorite(anime: Anime) {
       return self.favorites.includes(anime)
@@ -27,7 +27,7 @@ export const AnimeStoreModel = types
   .actions((self) => ({
     async fetchAnimes() {
       const animes = await KitsuAPIService.getAnimeList()
-      self.setProp("animeList", animes.map(mapAnime))
+      self.setProp("animes", animes.map(mapAnime))
     },
     addFavorite(anime: Anime) {
       self.favorites.push(anime)

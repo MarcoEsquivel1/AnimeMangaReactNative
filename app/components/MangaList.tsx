@@ -4,36 +4,36 @@ import React, {
 } from "react"
 import { ActivityIndicator, Dimensions, FlatList,  ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import {
-  Text,  Toggle, EmptyState, 
+  Text,  Toggle, EmptyState, MangaComponent
 } from "../components"
 import { isRTL } from "../i18n"
 import { useStores } from "../models"
 import { colors, spacing } from "../theme"
-import { AnimeComponent } from "./Anime"
+
 
 /**
  * Describe your component here
  */
-export const AnimeList = observer(function AnimeList() {
+export const MangaList = observer(function MangaList() {
   const [refreshing, setRefreshing] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
-  const { animeStore } = useStores()
+  const { mangaStore } = useStores()
   useEffect(() => {
     setIsLoading(true)
-    animeStore.fetchAnimes()
+    mangaStore.fetchMangas()
     setIsLoading(false)
   }, [])
 
   return (
-    <View style={{ marginBottom: 10, marginTop: 5 }}>
+    <View style={{ marginBottom:10, marginTop: 5  }}>
           <View style={$heading}>
-            <Text preset="heading" text="Animes" />
-            {(animeStore.favoritesOnly || animeStore.animes.length > 0) && (
+            <Text preset="heading" text="Mangas" />
+            {(mangaStore.favoritesOnly || mangaStore.mangas.length > 0) && (
               <View style={$toggle}>
                 <Toggle
-                  value={animeStore.favoritesOnly}
+                  value={mangaStore.favoritesOnly}
                   onValueChange={() =>
-                    animeStore.setProp("favoritesOnly", !animeStore.favoritesOnly)
+                    mangaStore.setProp("favoritesOnly", !mangaStore.favoritesOnly)
                   }
                   variant="switch"
                   label="Favoritos"
@@ -44,8 +44,8 @@ export const AnimeList = observer(function AnimeList() {
             )}
           </View>
           <FlatList 
-            data={animeStore.animeList}
-            extraData={animeStore.favorites.length + animeStore.animeList.length}
+            data={mangaStore.mangaList}
+            extraData={mangaStore.favorites.length + mangaStore.mangaList.length}
             horizontal={true}
             contentContainerStyle={{ paddingHorizontal: 5 }}
             ListEmptyComponent={
@@ -56,13 +56,13 @@ export const AnimeList = observer(function AnimeList() {
                   preset="generic"
                   style={$emptyState}
                   heading={
-                    animeStore.favoritesOnly
+                    mangaStore.favoritesOnly
                       ? "No hay favoritos"
                       : undefined
                   }
                   content={
-                    animeStore.favoritesOnly
-                      ? "Agrega tus animes favoritos"
+                    mangaStore.favoritesOnly
+                      ? "Agrega tus mangas favoritos"
                       : undefined
                   }
                   imageStyle={$emptyStateImage}
@@ -70,7 +70,7 @@ export const AnimeList = observer(function AnimeList() {
                 />
               )
             }
-            renderItem={({item}) => (<AnimeComponent isFavorite={animeStore.hasFavorite(item)} onPressFavorite={() => animeStore.toggleFavorite(item)} anime={item} />)}
+            renderItem={({item}) => (<MangaComponent isFavorite={mangaStore.hasFavorite(item)} onPressFavorite={() => mangaStore.toggleFavorite(item)} manga={item} />)}
           />
         </View>
   )
