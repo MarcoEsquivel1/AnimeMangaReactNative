@@ -35,11 +35,7 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
   return (
     // <Screen style={$root} preset="scroll">
       // <Text text={anime?.canonicalTitle} />
-      <Animated.View 
-            entering={SlideInDown}
-            exiting={SlideOutDown}
-            
-            layout={Layout.springify().delay(200)}
+      <View
             className="h-full flex-col bg-black">
             <View className="h-3/5">
                 <Animated.View 
@@ -71,7 +67,7 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
                 </View>
                 </ImageBackground>
             </View>
-        </Animated.View>
+        </View>
     // </Screen>
   )
 })

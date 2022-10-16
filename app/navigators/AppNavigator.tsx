@@ -9,7 +9,7 @@ import {
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import React from "react"
@@ -21,6 +21,7 @@ import {
   WelcomeScreen,
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
+import { HeaderBackButton } from '@react-navigation/elements';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -55,12 +56,28 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = StackScreen
 >
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createNativeStackNavigator<AppStackParamList>()
+const Stack = createStackNavigator<AppStackParamList>()
+
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  }
+}
 
 const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ 
+        headerShown: false, 
+        gestureEnabled: true,
+        ...TransitionPresets.SlideFromRightIOS,  
+      }}
     >
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="Anime" component={AnimeScreen} />
