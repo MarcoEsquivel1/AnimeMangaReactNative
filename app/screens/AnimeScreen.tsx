@@ -114,7 +114,7 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
 
         </View>
         <View>
-          <Text className="text-white font-semibold text-2xl mx-3 my-5">Episodes</Text>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Episodios</Text>
           <FlatList 
           horizontal={true}
           data={anime.episodes}
@@ -128,7 +128,7 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
                 >
                     <View className="h-full">
                         <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{item.canonicalTitle != null ? item.canonicalTitle : "No encontrado"}</Text>
-                        <Text className="text-white font-semibold absolute bottom-0">Episode: {item.number != null ? item.number : null}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0">Episodio: {item.number != null ? item.number : null}</Text>
                     </View>
                 </View>
               </ImageBackground>
@@ -147,7 +147,7 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
           />
         </View>
         <View>
-          <Text className="text-white font-semibold text-2xl mx-3 my-5">Characters</Text>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Personajes</Text>
           <FlatList 
           horizontal={true}
           data={characters}

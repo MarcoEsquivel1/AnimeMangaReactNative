@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite"
 import React, {
   FC, useEffect,
 } from "react"
-import { ActivityIndicator, Dimensions, FlatList,  ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { Image, ActivityIndicator, Dimensions, FlatList,  ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import {
   Text,  Toggle, EmptyState, 
 } from "../components"
@@ -27,7 +27,7 @@ export const AnimeList = observer(function AnimeList() {
   return (
     <View style={{ marginBottom: 10, marginTop: 5 }}>
           <View style={$heading}>
-            <Text preset="heading" text="Animes Trending" />
+            <Text preset="heading" text="Animes" style={{color: '#fff'}}/>
             {(animeStore.favoritesOnly || animeStore.animes.length > 0) && (
               <View style={$toggle}>
                 <Toggle
@@ -53,22 +53,10 @@ export const AnimeList = observer(function AnimeList() {
               isLoading ? (
                 <ActivityIndicator />
               ) : (
-                <EmptyState
-                  preset="generic"
-                  style={$emptyState}
-                  heading={
-                    animeStore.favoritesOnly
-                      ? "No hay favoritos"
-                      : undefined
-                  }
-                  content={
-                    animeStore.favoritesOnly
-                      ? "Agrega tus animes favoritos"
-                      : undefined
-                  }
-                  imageStyle={$emptyStateImage}
-                  ImageProps={{ resizeMode: "contain" }}
-                />
+                <View className="flex-1 items-center" style={$emptyState}>
+                  <Text style={$hStyle}>No hay animes favoritos</Text>
+                  <Image className="mt-5" source={require("../../assets/images/error.png")} />
+                </View>
               )
             }
             keyExtractor={(item) => item.id}
@@ -91,11 +79,17 @@ const $toggle: ViewStyle = {
 
 const $labelStyle: TextStyle = {
   textAlign: "right",
+  color: '#fff',
+}
+const $hStyle: TextStyle = {
+  textAlign: "center",
+  color: '#fff',
+  fontSize: 20,
 }
 
 const $emptyState: ViewStyle = {
-  marginTop: spacing.huge,
   width: Dimensions.get("window").width/1.05,
+  height: 350
 }
 const $emptyStateImage: ImageStyle = {
   transform: [{ scaleX: isRTL ? -1 : 1 }],
