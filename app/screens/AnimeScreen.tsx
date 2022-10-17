@@ -30,6 +30,7 @@ import { FlatList } from "react-native-gesture-handler"
 // @ts-ignore
 export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = observer(
   function AnimeScreen(props) {
+    const [characters, setCharacters] = React.useState([])
     const { animeStore } = useStores()
     const { anime } = props.route.params
     const { width } = Dimensions.get("window")
@@ -57,7 +58,12 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
 
     useEffect(() => {
       anime.fetchEpisodes()
+      anime.fetchCharacters()
     }, [anime.id])
+
+    useEffect(() => {
+      setCharacters(anime.characterList)
+    }, [anime.characters])
 
     return (
       <Screen  style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
@@ -103,19 +109,21 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
 
         </View>
         <View>
-          <Text className="text-white font-semibold text-2xl mx-3 my-5">Episodios</Text>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Episodes</Text>
           <FlatList 
           horizontal={true}
           data={anime.episodes}
+          
           renderItem={({item}) => (
-            item.canonicalTitle != null ? (
-              <ImageBackground source={item.thumbnail.original != null ? {uri: item.thumbnail.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+            item == null ? null : (
+              item.canonicalTitle != null ? (
+              <ImageBackground source={item.thumbnail != null && item.thumbnail.original != null ? {uri: item.thumbnail.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
                 <View 
                     className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
                 >
                     <View className="h-full">
                         <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{item.canonicalTitle != null ? item.canonicalTitle : "No encontrado"}</Text>
-                        <Text className="text-white font-semibold absolute bottom-0">Episode: {item.number != null ?? item.number}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0">Episode: {item.number != null ? item.number : null}</Text>
                     </View>
                 </View>
               </ImageBackground>
@@ -130,7 +138,39 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
                     </View>
                 </View>
               </ImageBackground>
-          )}
+          ))}
+          />
+        </View>
+        <View>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Characters</Text>
+          <FlatList 
+          horizontal={true}
+          data={characters}
+          renderItem={({item}) => (
+            console.log(item),
+            item == null ? null: (
+              item.canonicalName != null ? (
+              <ImageBackground source={item.image != null && item.image.original != null ? {uri: item.image.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{item.canonicalName != null ? item.canonicalName : "No encontrado"}</Text>
+                    </View>
+                </View>
+              </ImageBackground>
+            ) : 
+              <ImageBackground source={require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{"No disponible"}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0"></Text>
+                    </View>
+                </View>
+              </ImageBackground>
+          ))}
           />
         </View>
       </ScrollView>

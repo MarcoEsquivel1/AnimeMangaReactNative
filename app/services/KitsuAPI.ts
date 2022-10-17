@@ -32,6 +32,21 @@ export default class KitsuAPIService {
         return response.data.data;
     }
 
+    //anime characters
+    static async getAnimeCharacters(animeId) {
+        const response = await KitsuAPI.get(`/anime/${animeId}/characters`);
+        //get data from each character
+        const characters = response.data.data;
+        
+        const charactersData = characters.map(async (character) => {
+            const characterData = await KitsuAPI.get(`/anime-characters/${character.id}/character`);
+            return characterData.data.data;
+        });
+        
+        const charactersDataResolved = await Promise.all(charactersData);
+        return charactersDataResolved;
+    }
+
     /* static async getAnimeCharacters(animeId: number) {
         const response = await KitsuAPI.get(`/media-characters/${animeId}/character`);
         return response.data.data;

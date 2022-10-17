@@ -3,6 +3,7 @@ import KitsuAPIService from "../services/KitsuAPI"
 import { navigate } from "../navigators"
 import { EpisodeModel } from "./Episode"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { AnimeCharacterModel } from "./AnimeCharacter"
 /**
  * Model description here for TypeScript hints.
  */
@@ -28,10 +29,15 @@ export const AnimeModel = types
     })),
     youtubeVideoId: types.maybeNull(types.string),
     episodes: types.maybeNull(types.array(EpisodeModel)), 
+    characters: types.maybeNull(types.array(AnimeCharacterModel)),
     /* favorite: types.optional(types.boolean, false), */
     /* characters: types.frozen(), */
   })
-  .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .views((self) => ({
+    get characterList(){
+      return self.characters || []
+    },
+  })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(withSetPropAction)
   .actions((self) => ({
     navigate() {
@@ -46,6 +52,16 @@ export const AnimeModel = types
         canonicalTitle: episode.attributes.canonicalTitle,
         synopsis: episode.attributes.synopsis,
         thumbnail: episode.attributes.thumbnail,
+      })));
+    },
+    //characters
+    async fetchCharacters() {
+      const characters = await KitsuAPIService.getAnimeCharacters(self.id);
+      self.setProp("characters", characters.map((character) => ({
+        id: character.id,
+        slug: character.attributes.slug,
+        canonicalName: character.attributes.canonicalName,
+        image: character.attributes.image,
       })));
     }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars

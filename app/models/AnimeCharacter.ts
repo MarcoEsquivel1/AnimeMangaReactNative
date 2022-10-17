@@ -5,7 +5,18 @@ import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
  */
 export const AnimeCharacterModel = types
   .model("AnimeCharacter")
-  .props({})
+  .props({
+    id: types.identifier,
+    slug: types.maybeNull(types.string),
+    canonicalName: types.maybeNull(types.string),
+    image: types.maybeNull(types.model({
+      tiny: types.maybeNull(types.string),
+      small: types.maybeNull(types.string),
+      medium: types.maybeNull(types.string),
+      large: types.maybeNull(types.string),
+      original: types.maybeNull(types.string),
+    })),
+  })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
 
