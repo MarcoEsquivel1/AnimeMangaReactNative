@@ -47,6 +47,21 @@ export default class KitsuAPIService {
         return charactersDataResolved;
     }
 
+    //manga characters
+    static async getMangaCharacters(mangaId) {
+        const response = await KitsuAPI.get(`/manga/${mangaId}/characters`);
+        //get data from each character
+        const characters = response.data.data;
+
+        const charactersData = characters.map(async (character) => {
+            const characterData = await KitsuAPI.get(`/media-characters/${character.id}/character`);
+            return characterData.data.data;
+        });
+
+        const charactersDataResolved = await Promise.all(charactersData);
+        return charactersDataResolved;
+    }
+
     /* static async getAnimeCharacters(animeId: number) {
         const response = await KitsuAPI.get(`/media-characters/${animeId}/character`);
         return response.data.data;

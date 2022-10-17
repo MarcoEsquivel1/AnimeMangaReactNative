@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { navigate } from "../navigators"
 import KitsuAPIService from "../services/KitsuAPI"
+import { AnimeCharacterModel } from "./AnimeCharacter"
 import { ChapterModel } from "./Chapter"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 /**
@@ -27,6 +28,7 @@ export const MangaModel = types
       original: types.maybeNull(types.string),
     })),
     chapters: types.maybeNull(types.array(ChapterModel)),
+    characters: types.maybeNull(types.array(AnimeCharacterModel)),
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(withSetPropAction)
@@ -44,6 +46,16 @@ export const MangaModel = types
         synopsis: chapter.attributes.synopsis,
         thumbnail: chapter.attributes.thumbnail,
         })))
+    },
+    //characters
+    async fetchCharacters() {
+      const characters = await KitsuAPIService.getMangaCharacters(self.id)
+      self.setProp("characters", characters.map((character) => ({
+        id: character.id,
+        slug: character.attributes.slug,
+        canonicalName: character.attributes.canonicalName,
+        image: character.attributes.image,
+      })))
     }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

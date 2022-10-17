@@ -37,6 +37,7 @@ import { SharedElement } from "react-native-shared-element"
 // @ts-ignore
 export const MangaScreen: FC<StackScreenProps<AppStackScreenProps, "Manga">> = observer(function MangaScreen(props) {
   const { manga } = props.route.params
+  const [characters, setCharacters] = React.useState([])
   const PADDING = 20
   const { width } = Dimensions.get("window")
   const ITEM_WIDTH = width
@@ -62,7 +63,12 @@ export const MangaScreen: FC<StackScreenProps<AppStackScreenProps, "Manga">> = o
 
   useEffect(() => {
     manga.fetchChapters()
+    manga.fetchCharacters()
   }, [manga.id])
+
+  useEffect(() => {
+    setCharacters(manga.characters)
+  }, [manga.characters])
 
   return (
     <Screen  style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
@@ -131,6 +137,37 @@ export const MangaScreen: FC<StackScreenProps<AppStackScreenProps, "Manga">> = o
               </ImageBackground>
           )
           )}
+          />
+        </View>
+        <View>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Characters</Text>
+          <FlatList 
+          horizontal={true}
+          data={characters}
+          renderItem={({item}) => (
+            item == null ? null: (
+              item.canonicalName != null ? (
+              <ImageBackground source={item.image != null && item.image.original != null ? {uri: item.image.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{item.canonicalName != null ? item.canonicalName : "No encontrado"}</Text>
+                    </View>
+                </View>
+              </ImageBackground>
+            ) : 
+              <ImageBackground source={require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{"No disponible"}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0"></Text>
+                    </View>
+                </View>
+              </ImageBackground>
+          ))}
           />
         </View>
       </ScrollView>
