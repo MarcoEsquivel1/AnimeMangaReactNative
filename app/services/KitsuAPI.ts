@@ -15,6 +15,12 @@ export default class KitsuAPIService {
         return response.data.data;
     }
 
+    //search anime
+    static async searchAnime(query) {
+        const response = await KitsuAPI.get(`/anime?filter[text]=${query}`);
+        return response.data.data;
+    }
+
     static async getMangaList() {
         const response = await KitsuAPI.get('/trending/manga');
         return response.data.data;
@@ -61,6 +67,7 @@ export default class KitsuAPIService {
         const charactersDataResolved = await Promise.all(charactersData);
         return charactersDataResolved;
     }
+
 
     /* static async getAnimeCharacters(animeId: number) {
         const response = await KitsuAPI.get(`/media-characters/${animeId}/character`);

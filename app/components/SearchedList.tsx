@@ -17,35 +17,38 @@ import { AnimeComponent } from "./Anime"
 /**
  * Describe your component here
  */
-export const AnimeList = observer(function AnimeList() {
+export const SearchedList = observer(function SearchedList() {
   const [isLoading, setIsLoading] = React.useState(false)
+  const [animes, setAnimes] = React.useState([])
   const { animeStore } = useStores()
   useEffect(() => {
     setIsLoading(true)
-    animeStore.fetchAnimes()
+    setAnimes(animeStore.searchedAnimeList)
     setIsLoading(false)
-  }, [])
+  }, [animeStore.searchedAnime])
+  
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center" style={$emptyState}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
 
+  if (animes.length === 0) {
+    return (
+      <View></View>
+    )
+  }
+  
   return (
     <View style={{ marginBottom: 10, marginTop: 5 }}>
       <View style={$heading}>
-        <Text preset="heading" text="Animes" style={{ color: "#fff" }} />
-        {(animeStore.favoritesOnly || animeStore.animes.length > 0) && (
-          <View style={$toggle}>
-            <Toggle
-              value={animeStore.favoritesOnly}
-              onValueChange={() => animeStore.setProp("favoritesOnly", !animeStore.favoritesOnly)}
-              variant="switch"
-              label="Favoritos"
-              labelPosition="left"
-              labelStyle={$labelStyle}
-            />
-          </View>
-        )}
+        <Text preset="heading" text="Busqueda" style={{ color: "#fff" }} />
       </View>
       <FlatList
-        data={animeStore.animeList}
-        extraData={animeStore.favorites.length + animeStore.animeList.length}
+        data={animes}
+        extraData={animes.length}
         horizontal={true}
         decelerationRate="fast"
         contentContainerStyle={{ paddingHorizontal: 5 }}
@@ -54,7 +57,7 @@ export const AnimeList = observer(function AnimeList() {
             <ActivityIndicator />
           ) : (
             <View className="flex-1 items-center" style={$emptyState}>
-              <Text style={$hStyle}>No hay animes favoritos</Text>
+              <Text style={$hStyle}>No se encontraron resultados</Text>
               <Image className="mt-5" source={require("../../assets/images/error.png")} />
             </View>
           )
@@ -65,7 +68,7 @@ export const AnimeList = observer(function AnimeList() {
             isFavorite={animeStore.hasFavorite(item)}
             onPressFavorite={() => animeStore.toggleFavorite(item)}
             anime={item}
-            canFavorite={true}
+            canFavorite={false}
           />
         )}
       />
@@ -92,6 +95,7 @@ const $hStyle: TextStyle = {
   textAlign: "center",
   color: "#fff",
   fontSize: 20,
+  marginLeft: 10,
 }
 
 const $emptyState: ViewStyle = {

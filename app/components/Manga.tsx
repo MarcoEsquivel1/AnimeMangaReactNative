@@ -19,6 +19,7 @@ export interface MangaProps {
   manga: Manga
   isFavorite?: boolean
   onPressFavorite?: () => void
+  canFavorite?: boolean
 }
 
 /**
@@ -28,10 +29,12 @@ export const MangaComponent = observer(function Manga({
   manga,
   isFavorite,
   onPressFavorite,
+  canFavorite,
 }: {
   manga: Manga
   isFavorite?: boolean
   onPressFavorite?: () => void
+  canFavorite?: boolean
 }) {
   const { width } = Dimensions.get("window")
   const PADDING = 20
@@ -83,17 +86,18 @@ export const MangaComponent = observer(function Manga({
             </Text>
           </View>
         </View>
-
-        <TouchableOpacity
-          className="absolute top-0 right-0 bg-transparent/50 rounded-3xl p-5 z-20"
-          onPress={() => {
-            handlePressFavorite()
-          }}
-        >
-          <View>
-            <MaterialCommunityIcons name="star" size={35} color={liked ? "yellow" : "white"} />
-          </View>
-        </TouchableOpacity>
+        {canFavorite && (
+          <TouchableOpacity
+            className="absolute top-0 right-0 bg-transparent/50 rounded-3xl p-5 z-20"
+            onPress={() => {
+              handlePressFavorite()
+            }}
+          >
+            <View>
+              <MaterialCommunityIcons name="star" size={35} color={liked ? "yellow" : "white"} />
+            </View>
+          </TouchableOpacity>
+        )}
         <SharedElement id={`item.${manga.id}.photo2`} className="absolute top-0 right-0 z-10">
           <Image source={image} style={styles.image} />
         </SharedElement>

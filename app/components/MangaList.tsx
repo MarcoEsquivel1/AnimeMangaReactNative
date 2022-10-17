@@ -63,6 +63,7 @@ export const MangaList = observer(function MangaList() {
             isFavorite={mangaStore.hasFavorite(item)}
             onPressFavorite={() => mangaStore.toggleFavorite(item)}
             manga={item}
+            canFavorite={true}
           />
         )}
       />

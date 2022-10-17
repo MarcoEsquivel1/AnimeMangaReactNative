@@ -14,6 +14,7 @@ export const AnimeStoreModel = types
     isLoading: types.optional(types.boolean, false),
     favorites: types.array(types.reference(AnimeModel)),
     favoritesOnly: false,
+    searchedAnime: types.optional(types.array(AnimeModel), []),
   })
   .views((self) => ({
     get animeList(){
@@ -22,6 +23,9 @@ export const AnimeStoreModel = types
     hasFavorite(anime: Anime) {
       return self.favorites.includes(anime)
     },
+    get searchedAnimeList() {
+      return self.searchedAnime
+    }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(withSetPropAction)
   .actions((self) => ({
@@ -34,6 +38,10 @@ export const AnimeStoreModel = types
     },
     removeFavorite(anime: Anime) {
       self.favorites.remove(anime)
+    },
+    async searchAnime(query: string) {
+      const animes = await KitsuAPIService.searchAnime(query)
+      self.setProp("searchedAnime", animes.map(mapAnime))
     },
   })) 
   .actions((self) => ({
