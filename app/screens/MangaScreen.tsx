@@ -74,13 +74,6 @@ export const MangaScreen: FC<StackScreenProps<AppStackScreenProps, "Manga">> = o
               entering={ZoomIn.delay(300)}
               className="absolute top-1/2 right-0 z-30 backdrop-blur-lg bg-white/50 px-3"
             >
-              <TouchableOpacity onPress={() => {}} className="flex-row ">
-                <MaterialCommunityIcons name="play" size={35} color={"red"} />
-                <Text className="self-center font-bold text-lg" style={{ color: "red" }}>
-                  {" "}
-                  Ver video
-                </Text>
-              </TouchableOpacity>
             </Animated.View>
             <StatusBar hidden />
             <View className="flex-col w-full absolute bottom-0 z-30 p-2 backdrop-blur-lg bg-transparent/50 h-1/6">

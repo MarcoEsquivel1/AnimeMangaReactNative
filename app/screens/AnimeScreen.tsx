@@ -11,6 +11,7 @@ import {
   Dimensions,
   ScrollView,
   ImageBackground,
+  Linking,
 } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AppStackScreenProps, goBack } from "../navigators"
@@ -75,7 +76,11 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
               entering={ZoomIn.delay(300)}
               className="absolute top-1/2 right-0 z-30 backdrop-blur-lg bg-white/50 px-3"
             >
-              <TouchableOpacity onPress={() => {}} className="flex-row ">
+              <TouchableOpacity onPress={() => {
+                if (anime.youtubeVideoId) {
+                  Linking.openURL('vnd.youtube://'+anime.youtubeVideoId)
+                }
+              }} className="flex-row ">
                 <MaterialCommunityIcons name="play" size={35} color={"red"} />
                 <Text className="self-center font-bold text-lg" style={{ color: "red" }}>
                   {" "}
@@ -147,7 +152,6 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
           horizontal={true}
           data={characters}
           renderItem={({item}) => (
-            console.log(item),
             item == null ? null: (
               item.canonicalName != null ? (
               <ImageBackground source={item.image != null && item.image.original != null ? {uri: item.image.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
