@@ -30,8 +30,6 @@ export const AnimeModel = types
     youtubeVideoId: types.maybeNull(types.string),
     episodes: types.maybeNull(types.array(EpisodeModel)), 
     characters: types.maybeNull(types.array(AnimeCharacterModel)),
-    /* favorite: types.optional(types.boolean, false), */
-    /* characters: types.frozen(), */
   })
   .views((self) => ({
     get characterList(){
