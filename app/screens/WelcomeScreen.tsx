@@ -16,7 +16,7 @@ export const WelcomeScreen = observer(function WelcomeScreen(
   return (
     <Screen style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
       <StatusBar hidden />
-      <ScrollView className="py-5 mb-5" style={{flex: 1,}}>
+      <ScrollView className="py-7 " style={{flex: 1,}}>
         <AnimeList />
         <MangaList />
       </ScrollView>

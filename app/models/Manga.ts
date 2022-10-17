@@ -1,5 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
-
+import { navigate } from "../navigators"
 /**
  * Model description here for TypeScript hints.
  */
@@ -25,7 +25,11 @@ export const MangaModel = types
     })),
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .actions((self) => ({
+    navigate() {
+      navigate("Manga", { manga: self })
+    }
+  })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export interface Manga extends Instance<typeof MangaModel> {}
 export interface MangaSnapshotOut extends SnapshotOut<typeof MangaModel> {}

@@ -25,7 +25,7 @@ export const MangaList = observer(function MangaList() {
   }, [])
 
   return (
-    <View style={{ marginBottom:10, marginTop: 5  }}>
+    <View style={{ marginBottom:40, marginTop: 5  }}>
           <View style={$heading}>
             <Text preset="heading" text="Mangas Trending" />
             {(mangaStore.favoritesOnly || mangaStore.mangas.length > 0) && (

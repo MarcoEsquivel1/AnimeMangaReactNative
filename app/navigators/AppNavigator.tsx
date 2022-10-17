@@ -18,11 +18,13 @@ import Config from "../config"
 import { Anime } from "../models/Anime"
 import {
   AnimeScreen,
+  MangaScreen,
   WelcomeScreen,
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { HeaderBackButton } from '@react-navigation/elements';
 import { SharedElement, createSharedElementStackNavigator } from "react-navigation-shared-element"
+import { Manga } from "../models"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -41,6 +43,9 @@ export type AppStackParamList = {
   Welcome: undefined
   Anime: {
     anime: Anime
+  }
+  Manga: {
+    manga: Manga
   }
   // 🔥 Your screens go here
 }
@@ -87,6 +92,15 @@ const AppStack = observer(function AppStack() {
             sharedElements={
               (route) => {
                 return [`item.${route.params.anime.id}.photo`]
+              }
+            }
+          />
+          <Stack.Screen 
+            name="Manga"
+            component={MangaScreen}
+            sharedElements={
+              (route) => {
+                return [`item.${route.params.manga.id}.photo2`]
               }
             }
           />
