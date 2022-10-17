@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite"
 import { Text } from "./Text"
 import { Anime } from "../models/Anime"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { SharedElement, createSharedElementStackNavigator } from "react-navigation-shared-element"
 
 export interface AnimeProps {
   style?: StyleProp<ViewStyle>
@@ -16,7 +17,7 @@ export interface AnimeProps {
 export const AnimeComponent = observer(function Anime({anime, isFavorite, onPressFavorite}: {anime: Anime, isFavorite?: boolean, onPressFavorite?: () => void}) {
   const { width } = Dimensions.get("window")
   const PADDING = 20
-  const ITEM_WIDTH = width / 1.5
+  const ITEM_WIDTH = width /1.1
   const image = anime.posterImage != null ? { uri: anime.posterImage.small } : require("../../assets/images/error.jpg")
   /* console.log(isFavorite); */
   const [liked, setliked] = React.useState(isFavorite);
@@ -77,9 +78,9 @@ export const AnimeComponent = observer(function Anime({anime, isFavorite, onPres
                 />
               </View>
             </TouchableOpacity>
-            <View className="absolute top-0 right-0 z-10">
+            <SharedElement id={`item.${anime.id}.photo`}  className="absolute top-0 right-0 z-10">
               <Image source={image} style={styles.image} />
-            </View>
+            </SharedElement>
       </View>
     </TouchableOpacity>
   )

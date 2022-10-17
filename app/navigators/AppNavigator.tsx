@@ -22,6 +22,7 @@ import {
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { HeaderBackButton } from '@react-navigation/elements';
+import { SharedElement, createSharedElementStackNavigator } from "react-navigation-shared-element"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -56,7 +57,7 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = StackScreen
 >
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createStackNavigator<AppStackParamList>()
+const Stack = createSharedElementStackNavigator<AppStackParamList>()
 
 const config = {
   animation: 'spring',
@@ -76,11 +77,19 @@ const AppStack = observer(function AppStack() {
       screenOptions={{ 
         headerShown: false, 
         gestureEnabled: true,
-        ...TransitionPresets.SlideFromRightIOS,  
+        ...TransitionPresets.FadeFromBottomAndroid,  
       }}
     >
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Anime" component={AnimeScreen} />
+          <Stack.Screen 
+            name="Anime" 
+            component={AnimeScreen} 
+            sharedElements={
+              (route) => {
+                return [`item.${route.params.anime.id}.photo`]
+              }
+            }
+          />
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
   )

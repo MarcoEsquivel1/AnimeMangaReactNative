@@ -27,7 +27,7 @@ export const AnimeList = observer(function AnimeList() {
   return (
     <View style={{ marginBottom: 10, marginTop: 5 }}>
           <View style={$heading}>
-            <Text preset="heading" text="Animes" />
+            <Text preset="heading" text="Animes Trending" />
             {(animeStore.favoritesOnly || animeStore.animes.length > 0) && (
               <View style={$toggle}>
                 <Toggle
@@ -47,6 +47,7 @@ export const AnimeList = observer(function AnimeList() {
             data={animeStore.animeList}
             extraData={animeStore.favorites.length + animeStore.animeList.length}
             horizontal={true}
+            decelerationRate='fast'
             contentContainerStyle={{ paddingHorizontal: 5 }}
             ListEmptyComponent={
               isLoading ? (

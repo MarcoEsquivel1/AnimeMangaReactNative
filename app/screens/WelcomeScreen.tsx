@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite"
 import React, {
   FC, useEffect,
 } from "react"
-import { ScrollView, ViewStyle } from "react-native"
+import { ScrollView, StatusBar, ViewStyle } from "react-native"
 import {
   Screen,
 } from "../components"
@@ -15,7 +15,8 @@ export const WelcomeScreen = observer(function WelcomeScreen(
 ) {
   return (
     <Screen style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
-      <ScrollView style={{flex: 1,}}>
+      <StatusBar hidden />
+      <ScrollView className="py-5 mb-5" style={{flex: 1,}}>
         <AnimeList />
         <MangaList />
       </ScrollView>
