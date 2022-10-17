@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import {
   Image,
@@ -10,6 +10,7 @@ import {
   Text,
   Dimensions,
   ScrollView,
+  ImageBackground,
 } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AppStackScreenProps, goBack } from "../navigators"
@@ -21,12 +22,15 @@ import Animated, {
 } from "react-native-reanimated"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { SharedElement } from "react-native-shared-element"
+import { useStores } from "../models"
+import { FlatList } from "react-native-gesture-handler"
 
 
 // REMOVE ME! ⬇️ This TS ignore will not be necessary after you've added the correct navigator param type
 // @ts-ignore
 export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = observer(
   function AnimeScreen(props) {
+    const { animeStore } = useStores()
     const { anime } = props.route.params
     const { width } = Dimensions.get("window")
     const PADDING = 20
@@ -40,10 +44,20 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
             width: ITEM_WIDTH,
             height: 470,
           },
+          image2: {
+            flex: 1,
+            resizeMode: 'cover',
+            justifyContent: 'flex-end',
+            marginHorizontal:10
+        }
         })
     if (!anime) {
       goBack()
     }
+
+    useEffect(() => {
+      anime.fetchEpisodes()
+    }, [anime.id])
 
     return (
       <Screen  style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
@@ -87,6 +101,37 @@ export const AnimeScreen: FC<StackScreenProps<AppStackScreenProps, "Anime">> = o
             <Text className="text-white font-semibold">{anime.synopsis}</Text>
           </View>
 
+        </View>
+        <View>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Episodios</Text>
+          <FlatList 
+          horizontal={true}
+          data={anime.episodes}
+          renderItem={({item}) => (
+            item.canonicalTitle != null ? (
+              <ImageBackground source={item.thumbnail.original != null ? {uri: item.thumbnail.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{item.canonicalTitle != null ? item.canonicalTitle : "No encontrado"}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0">Episode: {item.number != null ?? item.number}</Text>
+                    </View>
+                </View>
+              </ImageBackground>
+            ) : 
+              <ImageBackground source={require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{"No disponible"}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0"></Text>
+                    </View>
+                </View>
+              </ImageBackground>
+          )}
+          />
         </View>
       </ScrollView>
     </Screen>

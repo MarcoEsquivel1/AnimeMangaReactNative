@@ -20,6 +20,18 @@ export default class KitsuAPIService {
         return response.data.data;
     }
 
+    //anime episodes    
+    static async getAnimeEpisodes(animeId) {
+        const response = await KitsuAPI.get(`/anime/${animeId}/episodes`);
+        return response.data.data;
+    }
+
+    //manga chapters
+    static async getMangaChapters(mangaId) {
+        const response = await KitsuAPI.get(`/manga/${mangaId}/chapters`);
+        return response.data.data;
+    }
+
     /* static async getAnimeCharacters(animeId: number) {
         const response = await KitsuAPI.get(`/media-characters/${animeId}/character`);
         return response.data.data;

@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import {
   Image,
@@ -10,6 +10,8 @@ import {
   Text,
   Dimensions,
   ScrollView,
+  FlatList,
+  ImageBackground,
 } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AppStackScreenProps, goBack } from "../navigators"
@@ -47,10 +49,21 @@ export const MangaScreen: FC<StackScreenProps<AppStackScreenProps, "Manga">> = o
           width: ITEM_WIDTH,
           height: 470,
         },
+        image2: {
+          flex: 1,
+          resizeMode: 'cover',
+          justifyContent: 'flex-end',
+          marginHorizontal:10
+      }
       })
   if (!manga) {
     goBack()
   }
+
+  useEffect(() => {
+    manga.fetchChapters()
+  }, [manga.id])
+
   return (
     <Screen  style={$root} preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContentContainer}>
       <StatusBar hidden />
@@ -93,6 +106,39 @@ export const MangaScreen: FC<StackScreenProps<AppStackScreenProps, "Manga">> = o
             <Text className="text-white font-semibold">{manga.synopsis}</Text>
           </View>
 
+        </View>
+        <View>
+          <Text className="text-white font-semibold text-2xl mx-3 my-5">Capitulos</Text>
+          <FlatList 
+          horizontal={true}
+          data={manga.chapters}
+          renderItem={({item}) => (
+            item == null ? null : (
+            item.canonicalTitle != null ? (
+              <ImageBackground source={ item.thumbnail != null && item.thumbnail.original != null ? {uri: item.thumbnail.original} : require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{item.canonicalTitle != null ? item.canonicalTitle : "No encontrado"}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0">Episode: {item.number != null ? item.number : null}</Text>
+                    </View>
+                </View>
+              </ImageBackground>
+            ) : 
+              <ImageBackground source={require("../../assets/images/error.png")} style={styles.image2} imageStyle={{borderRadius: 24,}}>
+                <View 
+                    className="flex-col p-2 backdrop-blur-lg bg-transparent/50 rounded-b-3xl h-32 w-32"
+                >
+                    <View className="h-full">
+                        <Text numberOfLines={2} ellipsizeMode="tail" className="text-white font-semibold">{"No disponible"}</Text>
+                        <Text className="text-white font-semibold absolute bottom-0"></Text>
+                    </View>
+                </View>
+              </ImageBackground>
+          )
+          )}
+          />
         </View>
       </ScrollView>
     </Screen>

@@ -1,6 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import KitsuAPIService from "../services/KitsuAPI"
 import { navigate } from "../navigators"
+import { EpisodeModel } from "./Episode"
+import { withSetPropAction } from "./helpers/withSetPropAction"
 /**
  * Model description here for TypeScript hints.
  */
@@ -25,14 +27,27 @@ export const AnimeModel = types
       original: types.maybeNull(types.string),
     })),
     youtubeVideoId: types.maybeNull(types.string),
+    episodes: types.maybeNull(types.array(EpisodeModel)), 
     /* favorite: types.optional(types.boolean, false), */
     /* characters: types.frozen(), */
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .actions(withSetPropAction)
   .actions((self) => ({
     navigate() {
       navigate("Anime", { anime: self })
     },
+    //episodes
+    async fetchEpisodes() {
+      const episodes = await KitsuAPIService.getAnimeEpisodes(self.id);
+      self.setProp("episodes", episodes.map((episode) => ({
+        id: episode.id,
+        number: episode.attributes.number,
+        canonicalTitle: episode.attributes.canonicalTitle,
+        synopsis: episode.attributes.synopsis,
+        thumbnail: episode.attributes.thumbnail,
+      })));
+    }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export interface Anime extends Instance<typeof AnimeModel> {}
